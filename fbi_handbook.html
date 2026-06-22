@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FBI Roleplay — Official Agent Handbook</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:       #0a0e1a;
+    --deep-blue:  #0d1b2e;
+    --mid-blue:   #112540;
+    --accent:     #c8a84b;
+    --accent-dim: #8a6e2f;
+    --text:       #d4dce8;
+    --text-dim:   #7a8da0;
+    --white:      #f0f4f9;
+    --rule:       #1e3050;
+    --seal-gold:  #d4a843;
+    --red:        #8b1a1a;
+    --green:      #1a5c2e;
+    --mono:       'Share Tech Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 16px;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  /* ─── SCANLINE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.04) 2px,
+      rgba(0,0,0,0.04) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ─── TOP CLEARANCE BAR ─── */
+  .clearance-bar {
+    background: var(--red);
+    color: #f8d7d7;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-align: center;
+    padding: 6px 20px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #5a0d0d;
+  }
+
+  /* ─── COVER ─── */
+  .cover {
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(200,168,75,0.08) 0%, transparent 65%),
+      linear-gradient(180deg, #0d1b2e 0%, #0a0e1a 100%);
+    border-bottom: 1px solid var(--rule);
+    padding: 80px 20px 70px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cover::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c8a84b' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  .seal {
+    width: 110px;
+    height: 110px;
+    margin: 0 auto 28px;
+    position: relative;
+  }
+
+  .seal svg { width: 100%; height: 100%; }
+
+  .cover-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--accent-dim);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .cover-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(38px, 7vw, 68px);
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1.05;
+    margin-bottom: 6px;
+  }
+
+  .cover-title span { color: var(--accent); }
+
+  .cover-subtitle {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(14px, 2.5vw, 20px);
+    font-weight: 400;
+    color: var(--text-dim);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 36px;
+  }
+
+  .cover-rule {
+    width: 220px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    margin: 0 auto 28px;
+  }
+
+  .cover-meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.12em;
+    line-height: 2;
+  }
+
+  .cover-meta strong { color: var(--accent); font-weight: normal; }
+
+  /* ─── NAV ─── */
+  .toc-nav {
+    background: var(--deep-blue);
+    border-bottom: 1px solid var(--rule);
+    padding: 0 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .toc-nav::-webkit-scrollbar { display: none; }
+
+  .toc-nav a {
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+    text-decoration: none;
+    text-transform: uppercase;
+    padding: 16px 18px;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .toc-nav a:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* ─── LAYOUT ─── */
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  section { padding: 70px 0 40px; border-bottom: 1px solid var(--rule); }
+  section:last-child { border-bottom: none; }
+
+  /* ─── SECTION HEADERS ─── */
+  .section-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-eyebrow::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+    max-width: 120px;
+  }
+
+  .section-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(26px, 4vw, 40px);
+    font-weight: 700;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+    margin-bottom: 32px;
+  }
+
+  /* ─── PREAMBLE ─── */
+  .preamble {
+    background: var(--mid-blue);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 4px 4px 0;
+    padding: 24px 28px;
+    margin-bottom: 36px;
+    font-size: 15px;
+    font-style: italic;
+    color: var(--text);
+    line-height: 1.8;
+  }
+
+  .preamble strong {
+    font-style: normal;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* ─── RULES GRID ─── */
+  .rules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .rule-card {
+    background: var(--deep-blue);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 22px 24px;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .rule-card:hover {
+    border-color: var(--accent-dim);
+    transform: translateY(-2px);
+  }
+
+  .rule-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .rule-card:hover::before { opacity: 1; }
+
+  .rule-number {
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .rule-number .badge {
+    background: rgba(200,168,75,0.12);
+    border: 1px solid rgba(200,168,75,0.3);
+    border-radius: 2px;
+    padding: 1px 6px;
+    font-size: 10px;
+  }
+
+  .rule-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 0.03em;
+    margin-bottom: 10px;
+  }
+
+  .rule-body {
+    font-size: 13.5px;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+
+  .rule-body em {
+    color: var(--text);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  /* ─── CONSEQUENCES TABLE ─── */
+  .consequence-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 24px;
+    font-size: 13.5px;
+  }
+
+  .consequence-table th {
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--mid-blue);
+    border: 1px solid var(--rule);
+    padding: 12px 16px;
+    text-align: left;
+  }
+
+  .consequence-table td {
+    border: 1px solid var(--rule);
+    padding: 12px 16px;
+    color: var(--text);
+    vertical-align: top;
+    background: var(--deep-blue);
+  }
+
+  .consequence-table tr:hover td { background: var(--mid-blue); }
+
+  .sev { display: inline-block; padding: 2px 8px; border-radius: 2px; font-size: 11px; font-weight: 600; font-family: var(--mono); letter-spacing: 0.1em; }
+  .sev-low    { background: rgba(26,92,46,0.3);  color: #5ddb8a; border: 1px solid #1a5c2e; }
+  .sev-mid    { background: rgba(180,120,10,0.3); color: #f0c040; border: 1px solid #8a6e2f; }
+  .sev-high   { background: rgba(139,26,26,0.3);  color: #f07070; border: 1px solid #8b1a1a; }
+  .sev-max    { background: rgba(100,10,10,0.4);  color: #ff4444; border: 1px solid #cc0000; }
+
+  /* ─── TRACK HEADERS ─── */
+  .track-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 48px 0 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .track-icon {
+    font-size: 26px;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(200,168,75,0.1);
+    border: 1px solid rgba(200,168,75,0.25);
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .track-title-group {}
+
+  .track-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--accent-dim);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .track-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .track-range {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    background: rgba(200,168,75,0.08);
+    border: 1px solid rgba(200,168,75,0.2);
+    padding: 6px 12px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  /* ─── RANK CARDS ─── */
+  .rank-list { display: flex; flex-direction: column; gap: 10px; }
+
+  .rank-card {
+    background: var(--deep-blue);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 16px 20px;
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    transition: border-color 0.2s;
+  }
+
+  .rank-card:hover { border-color: var(--accent-dim); }
+
+  .rank-gs {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    background: rgba(200,168,75,0.1);
+    border: 1px solid rgba(200,168,75,0.2);
+    border-radius: 3px;
+    padding: 4px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    letter-spacing: 0.08em;
+    margin-top: 2px;
+  }
+
+  .rank-info {}
+
+  .rank-title-text {
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 0.02em;
+    margin-bottom: 4px;
+  }
+
+  .rank-desc {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* ─── CHAIN OF COMMAND ─── */
+  .command-chain {
+    position: relative;
+    padding-left: 30px;
+  }
+
+  .command-chain::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    bottom: 12px;
+    width: 1px;
+    background: linear-gradient(180deg, var(--accent), transparent);
+  }
+
+  .command-node {
+    position: relative;
+    margin-bottom: 8px;
+  }
+
+  .command-node::before {
+    content: '';
+    position: absolute;
+    left: -22px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--navy);
+    box-shadow: 0 0 8px rgba(200,168,75,0.5);
+  }
+
+  .command-node.top::before { background: var(--seal-gold); width: 12px; height: 12px; left: -24px; }
+
+  .command-node-inner {
+    background: var(--deep-blue);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .command-node.top .command-node-inner {
+    border-color: var(--accent-dim);
+    background: var(--mid-blue);
+  }
+
+  .command-node-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 0.03em;
+  }
+
+  .command-node.top .command-node-title { color: var(--accent); font-size: 16px; }
+
+  .command-node-grade {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+
+  /* ─── ROLEPLAY PROTOCOLS ─── */
+  .protocol-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+    margin-top: 24px;
+  }
+
+  .protocol-card {
+    background: var(--deep-blue);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 20px;
+  }
+
+  .protocol-icon {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .protocol-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .protocol-body {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+
+  /* ─── GLOSSARY ─── */
+  .glossary-entry {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--rule);
+    padding: 16px 0;
+  }
+
+  .glossary-term {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent);
+    min-width: 120px;
+    flex-shrink: 0;
+    padding-right: 20px;
+    padding-top: 2px;
+    letter-spacing: 0.06em;
+  }
+
+  .glossary-def {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+
+  /* ─── OATH BLOCK ─── */
+  .oath-block {
+    background: var(--mid-blue);
+    border: 1px solid rgba(200,168,75,0.3);
+    border-radius: 4px;
+    padding: 40px;
+    text-align: center;
+    margin: 40px 0;
+    position: relative;
+  }
+
+  .oath-block::before, .oath-block::after {
+    content: '✦';
+    color: var(--accent);
+    font-size: 18px;
+    position: absolute;
+    top: 18px;
+  }
+
+  .oath-block::before { left: 20px; }
+  .oath-block::after { right: 20px; }
+
+  .oath-text {
+    font-size: clamp(15px, 2vw, 18px);
+    font-style: italic;
+    color: var(--text);
+    line-height: 1.9;
+    max-width: 640px;
+    margin: 0 auto 20px;
+  }
+
+  .oath-attribution {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--accent-dim);
+    text-transform: uppercase;
+  }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    background: var(--deep-blue);
+    border-top: 1px solid var(--rule);
+    padding: 40px 20px;
+    text-align: center;
+  }
+
+  .footer-seal {
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    color: var(--accent-dim);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .footer-sub {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.12em;
+    line-height: 2;
+  }
+
+  /* ─── CLASSIFIED STAMP ─── */
+  .classified-stamp {
+    display: inline-block;
+    border: 2px solid var(--red);
+    color: var(--red);
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    padding: 3px 10px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    opacity: 0.7;
+    transform: rotate(-2deg);
+    margin-left: 12px;
+    vertical-align: middle;
+  }
+
+  /* ─── UTILITY ─── */
+  .mt-lg { margin-top: 40px; }
+  .mt-md { margin-top: 24px; }
+  .notice {
+    background: rgba(139,26,26,0.15);
+    border: 1px solid rgba(139,26,26,0.4);
+    border-radius: 4px;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: #e8a0a0;
+    font-family: var(--mono);
+    letter-spacing: 0.06em;
+    margin-top: 20px;
+  }
+
+  .notice::before { content: '⚠ NOTICE — '; color: #ff6b6b; font-weight: bold; }
+
+  @media (max-width: 600px) {
+    .rules-grid { grid-template-columns: 1fr; }
+    .protocol-grid { grid-template-columns: 1fr; }
+    .track-range { display: none; }
+    .cover { padding: 50px 16px 40px; }
+    section { padding: 50px 0 30px; }
+    .oath-block { padding: 28px 20px; }
+    .rank-card { flex-direction: column; gap: 8px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rule-card, .rank-card { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="clearance-bar">
+  ⚠ &nbsp; INTERNAL USE ONLY — FEDERAL BUREAU OF INVESTIGATION — AGENT HANDBOOK &nbsp; ⚠
+</div>
+
+<!-- COVER -->
+<header class="cover">
+  <div class="seal" aria-hidden="true">
+    <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <!-- Outer ring -->
+      <circle cx="60" cy="60" r="56" fill="none" stroke="#c8a84b" stroke-width="1.5" opacity="0.6"/>
+      <circle cx="60" cy="60" r="50" fill="none" stroke="#c8a84b" stroke-width="0.5" opacity="0.3"/>
+      <!-- Inner shield -->
+      <path d="M60 18 L88 30 L88 62 Q88 82 60 96 Q32 82 32 62 L32 30 Z" fill="#0d1b2e" stroke="#c8a84b" stroke-width="1.2"/>
+      <!-- Shield inner line -->
+      <path d="M60 24 L82 34 L82 62 Q82 78 60 90 Q38 78 38 62 L38 34 Z" fill="none" stroke="rgba(200,168,75,0.3)" stroke-width="0.5"/>
+      <!-- FBI text -->
+      <text x="60" y="58" text-anchor="middle" font-family="'Oswald',sans-serif" font-weight="700" font-size="16" fill="#c8a84b" letter-spacing="3">FBI</text>
+      <text x="60" y="72" text-anchor="middle" font-family="'Oswald',sans-serif" font-size="5.5" fill="rgba(200,168,75,0.6)" letter-spacing="1.2">FIDELITY · BRAVERY · INTEGRITY</text>
+      <!-- Star points -->
+      <g fill="#c8a84b" opacity="0.4">
+        <polygon points="60,6 62,11 67,11 63,14 65,19 60,16 55,19 57,14 53,11 58,11" transform="rotate(0,60,60) translate(0,-50)"/>
+      </g>
+      <!-- Tick marks around ring -->
+      <g stroke="#c8a84b" stroke-width="1" opacity="0.35">
+        <line x1="60" y1="4" x2="60" y2="10" transform="rotate(0,60,60)"/>
+        <line x1="60" y1="4" x2="60" y2="10" transform="rotate(30,60,60)"/>
+        <line x1="60" y1="4" x2="60" y2="10" transform="rotate(60,60,60)"/>
+        <line x1="60" y1="4" x2="60" y2="10" transform="rotate(90,60,60)"/>
+        <line x1="60" y1="4" x2="60" y2="10" transform="rotate(120,60,60)"/>
+        <line x1="60" y1="4" x2="60" y2="10" transform="rotate(150,60,60)"/>
+        <line x1="60" y1="4" x2="60" y2="10" transform="rotate(180,60,60)"/>
+        <line x1="60" y1="4" x2="60" y2="10" transform="rotate(210,60,60)"/>
+        <line x1="60" y1="4" x2="60" y2="10" transform="rotate(240,60,60)"/>
+        <line x1="60" y1="4" x2="60" y2="10" transform="rotate(270,60,60)"/>
+        <line x1="60" y1="4" x2="60" y2="10" transform="rotate(300,60,60)"/>
+        <line x1="60" y1="4" x2="60" y2="10" transform="rotate(330,60,60)"/>
+      </g>
+    </svg>
+  </div>
+
+  <p class="cover-eyebrow">GR:PC Roleplay Server — Official Documentation</p>
+  <h1 class="cover-title">Federal Bureau of<br><span>Investigation</span></h1>
+  <p class="cover-subtitle">Agent Handbook &amp; Operational Guidelines</p>
+  <div class="cover-rule"></div>
+  <div class="cover-meta">
+    <strong>Document Class:</strong> Internal Operational Manual<br>
+    <strong>Status:</strong> Active &amp; Enforced<br>
+    <strong>Distribution:</strong> All Bureau Personnel<br>
+    <strong>Motto:</strong> Fidelity · Bravery · Integrity
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="toc-nav" aria-label="Handbook sections">
+  <a href="#directive">Directive</a>
+  <a href="#conduct">Code of Conduct</a>
+  <a href="#consequences">Disciplinary</a>
+  <a href="#roleplay">RP Protocols</a>
+  <a href="#ranks">Chain of Command</a>
+  <a href="#glossary">Glossary</a>
+  <a href="#oath">Agent Oath</a>
+</nav>
+
+<!-- MAIN -->
+<main class="page">
+
+  <!-- ── SECTION 1: DIRECTOR'S DIRECTIVE ── -->
+  <section id="directive">
+    <p class="section-eyebrow">Section 01</p>
+    <h2 class="section-title">Director's Directive</h2>
+
+    <div class="preamble">
+      <strong>To all Bureau Personnel —</strong><br>
+      The Federal Bureau of Investigation stands as a pillar of order, justice, and unwavering professionalism. This handbook is not a suggestion — it is a binding contract between you and the Bureau. Every agent, from the newest trainee at Quantico to the most seasoned Senior Supervisory veteran, is held to these standards without exception.<br><br>
+      <strong>Respect the badge. Respect the mission. Follow the protocol.</strong>
+    </div>
+
+    <p style="color: var(--text-dim); font-size: 14px; line-height: 1.9;">
+      This document governs conduct, communications, operational behavior, and the chain of command across all Bureau channels and roleplay environments. Failure to adhere to the standards outlined herein will result in disciplinary action commensurate with the severity of the violation. Ignorance of these guidelines is not a defense — all agents are expected to have read and understood this handbook in full prior to their first field deployment.
+    </p>
+
+    <div class="notice">
+      All members are required to acknowledge receipt of this handbook. Participation in any Bureau activity constitutes acceptance of these terms.
+    </div>
+  </section>
+
+  <!-- ── SECTION 2: CODE OF CONDUCT ── -->
+  <section id="conduct">
+    <p class="section-eyebrow">Section 02</p>
+    <h2 class="section-title">Code of Conduct <span class="classified-stamp">Enforced</span></h2>
+
+    <p style="color: var(--text-dim); font-size: 14px; margin-bottom: 28px; line-height: 1.9;">
+      The following directives constitute the foundational behavioral standards of the Bureau. Compliance is mandatory for all personnel regardless of rank, tenure, or assignment. These rules apply across all Bureau channels, voice communications, and roleplay scenarios.
+    </p>
+
+    <div class="rules-grid">
+
+      <div class="rule-card">
+        <div class="rule-number"><span class="badge">DIRECTIVE 01</span></div>
+        <div class="rule-title">Show Respect at All Times</div>
+        <div class="rule-body">Treat all members regardless of rank with professionalism and courtesy. <em>Disrespect, harassment, and trolling will not be tolerated</em> under any circumstances. The Bureau's reputation begins with how its agents treat one another.</div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-number"><span class="badge">DIRECTIVE 02</span></div>
+        <div class="rule-title">Use Proper Channels</div>
+        <div class="rule-body">Keep all discussions relevant to their designated channels. Avoid spamming, flooding, or repurposing channels for off-topic content. <em>Every channel has a purpose</em> — respect that structure.</div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-number"><span class="badge">DIRECTIVE 03</span></div>
+        <div class="rule-title">Follow the Chain of Command</div>
+        <div class="rule-body">Report issues, concerns, or grievances to your <em>direct superior only</em>. Bypassing the chain of command disrupts Bureau operations and will be treated as insubordination.</div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-number"><span class="badge">DIRECTIVE 04</span></div>
+        <div class="rule-title">Maintain Roleplay Integrity</div>
+        <div class="rule-body">Keep <em>In-Character (IC)</em> and <em>Out-of-Character (OOC)</em> behavior strictly separate. Metagaming, powergaming, and breaking immersion are prohibited. The integrity of the operation depends on your discipline.</div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-number"><span class="badge">DIRECTIVE 05</span></div>
+        <div class="rule-title">Protect Sensitive Information</div>
+        <div class="rule-body">Do not discuss active operations or confidential Bureau matters in public channels. <em>What happens in the Bureau stays in the Bureau.</em> Unauthorized disclosure of operational intelligence is a serious offense.</div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-number"><span class="badge">DIRECTIVE 06</span></div>
+        <div class="rule-title">Post Appropriate Content Only</div>
+        <div class="rule-body">No NSFW, copyrighted, or offensive material of any kind. <em>Profile pictures, nicknames, and usernames must remain professional</em> and consistent with Bureau standards at all times.</div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-number"><span class="badge">DIRECTIVE 07</span></div>
+        <div class="rule-title">Communicate Professionally</div>
+        <div class="rule-body">Use proper grammar, avoid excessive pinging, and keep messages clear and purposeful. <em>Every message you send reflects on the Bureau.</em> Write accordingly — you represent the Federal Government.</div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-number"><span class="badge">DIRECTIVE 08</span></div>
+        <div class="rule-title">Complete Required Training</div>
+        <div class="rule-body">All new members must pass mandatory training to earn full operational status. <em>No exceptions. No shortcuts.</em> Training exists to protect both the agent and the Bureau's mission.</div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-number"><span class="badge">DIRECTIVE 09</span></div>
+        <div class="rule-title">Exercise Common Sense</div>
+        <div class="rule-body">If an action is <em>clearly disruptive, disrespectful, or harmful</em> — even if not explicitly listed here — it is against the rules. The spirit of this handbook applies broadly. Ignorance is not immunity.</div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-number"><span class="badge">DIRECTIVE 10</span></div>
+        <div class="rule-title">Maintain Operational Confidentiality</div>
+        <div class="rule-body">Never share screenshots, logs, or details of internal Bureau discussions with outside parties. <em>Classified information stays classified.</em> Leaking internal Bureau communications is grounds for immediate removal.</div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-number"><span class="badge">DIRECTIVE 11</span></div>
+        <div class="rule-title">Represent the Bureau Professionally</div>
+        <div class="rule-body">Your conduct outside Bureau channels still reflects on the organization. <em>Agents are always on the clock.</em> Do not engage in behavior elsewhere that would bring disrepute to the Federal Bureau of Investigation.</div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-number"><span class="badge">DIRECTIVE 12</span></div>
+        <div class="rule-title">Support Fellow Agents</div>
+        <div class="rule-body">The Bureau operates as a unit. <em>Report suspicious behavior, offer assistance to fellow agents</em>, and foster a collaborative environment. Division within the ranks weakens the entire organization.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── SECTION 3: DISCIPLINARY ── -->
+  <section id="consequences">
+    <p class="section-eyebrow">Section 03</p>
+    <h2 class="section-title">Disciplinary Framework</h2>
+
+    <p style="color: var(--text-dim); font-size: 14px; margin-bottom: 24px; line-height: 1.9;">
+      Violations of Bureau directives are addressed proportionally based on severity and pattern of behavior. All disciplinary actions are logged in the Bureau's internal record system. Repeated infractions of any tier escalate automatically to the next tier regardless of individual severity.
+    </p>
+
+    <table class="consequence-table">
+      <thead>
+        <tr>
+          <th>Tier</th>
+          <th>Severity</th>
+          <th>Typical Violations</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="font-family:var(--mono); color:var(--accent);">TIER I</td>
+          <td><span class="sev sev-low">LOW</span></td>
+          <td style="color:var(--text-dim);">Minor spam, OOC in IC channel, mild disrespect, excessive pinging</td>
+          <td>Verbal warning / Formal written warning</td>
+        </tr>
+        <tr>
+          <td style="font-family:var(--mono); color:var(--accent);">TIER II</td>
+          <td><span class="sev sev-mid">MODERATE</span></td>
+          <td style="color:var(--text-dim);">Repeated Tier I offenses, sustained harassment, bypassing chain of command, inappropriate content</td>
+          <td>Temporary mute (1–24 hrs)</td>
+        </tr>
+        <tr>
+          <td style="font-family:var(--mono); color:var(--accent);">TIER III</td>
+          <td><span class="sev sev-high">HIGH</span></td>
+          <td style="color:var(--text-dim);">Metagaming, disclosing operational intel, sustained disrespect, failure to comply with superior orders</td>
+          <td>Extended mute or server kick</td>
+        </tr>
+        <tr>
+          <td style="font-family:var(--mono); color:var(--accent);">TIER IV</td>
+          <td><span class="sev sev-max">CRITICAL</span></td>
+          <td style="color:var(--text-dim);">Doxxing, NSFW content, deliberate sabotage of operations, impersonating command staff, information leaks</td>
+          <td>Permanent ban — no appeal</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="notice" style="margin-top:20px;">
+      All disciplinary decisions are at the discretion of Supervisory personnel and Bureau Command. The Bureau reserves the right to skip tiers for exceptionally severe single violations.
+    </div>
+  </section>
+
+  <!-- ── SECTION 4: RP PROTOCOLS ── -->
+  <section id="roleplay">
+    <p class="section-eyebrow">Section 04</p>
+    <h2 class="section-title">Roleplay Protocols</h2>
+
+    <p style="color: var(--text-dim); font-size: 14px; margin-bottom: 8px; line-height: 1.9;">
+      Maintaining immersion and fairness during operations is essential to the Bureau's identity. The following protocols govern how roleplay is to be conducted across all scenarios, from routine patrols to high-stakes investigations.
+    </p>
+
+    <div class="protocol-grid">
+      <div class="protocol-card">
+        <div class="protocol-icon">🔵</div>
+        <div class="protocol-title">IC / OOC Separation</div>
+        <div class="protocol-body">Always clearly distinguish between In-Character and Out-of-Character speech. Use designated OOC channels or brackets like <code style="color:var(--accent)">(( ))</code> for OOC communication during active RP. Never break immersion mid-scene without cause.</div>
+      </div>
+      <div class="protocol-card">
+        <div class="protocol-icon">🚫</div>
+        <div class="protocol-title">No Metagaming</div>
+        <div class="protocol-body">Using out-of-character knowledge to influence in-character decisions is strictly prohibited. Your character knows only what they have discovered IC. What you see in a Discord channel does not exist in the field.</div>
+      </div>
+      <div class="protocol-card">
+        <div class="protocol-icon">⚖️</div>
+        <div class="protocol-title">No Powergaming</div>
+        <div class="protocol-body">Do not perform actions your character could not realistically accomplish. Do not control another player's character without their consent. Roleplay is collaborative — not competitive. All parties must have meaningful agency.</div>
+      </div>
+      <div class="protocol-card">
+        <div class="protocol-icon">📋</div>
+        <div class="protocol-title">Operation Briefings</div>
+        <div class="protocol-body">All field operations require a briefing issued through proper command channels before deployment. Agents must not act outside the operational scope defined in their briefing documents. Mission creep is a disciplinary offense.</div>
+      </div>
+      <div class="protocol-card">
+        <div class="protocol-icon">🗂️</div>
+        <div class="protocol-title">Evidence &amp; Documentation</div>
+        <div class="protocol-body">All evidence gathered during investigations must be logged and submitted to the appropriate supervisory agent. Tampering with, destroying, or failing to report evidence is grounds for immediate review.</div>
+      </div>
+      <div class="protocol-card">
+        <div class="protocol-icon">🛑</div>
+        <div class="protocol-title">Pause Protocol</div>
+        <div class="protocol-body">If an OOC issue arises during active RP, any agent may call a pause using the designated signal. All roleplay halts until the matter is resolved. Ignoring a pause call is a disciplinary offense.</div>
+      </div>
+      <div class="protocol-card">
+        <div class="protocol-icon">🔏</div>
+        <div class="protocol-title">Confidential Operations</div>
+        <div class="protocol-body">Operations classified above your clearance level are strictly off-limits. Do not inquire about, speculate on, or attempt to access classified operational files without authorization from Command.</div>
+      </div>
+      <div class="protocol-card">
+        <div class="protocol-icon">👔</div>
+        <div class="protocol-title">Character Conduct</div>
+        <div class="protocol-body">Your character must behave in a manner consistent with a federal law enforcement officer. Gratuitous brutality, corruption roleplay, or rogue agent behavior requires prior Command approval and must serve a narrative purpose.</div>
+      </div>
+      <div class="protocol-card">
+        <div class="protocol-icon">📡</div>
+        <div class="protocol-title">Communication Standards</div>
+        <div class="protocol-body">Use proper radio and communications etiquette at all times. Channels have assigned frequencies — use them correctly. Transmissions should be clear, brief, and professional. No personal conversations over operational comms.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 5: CHAIN OF COMMAND ── -->
+  <section id="ranks">
+    <p class="section-eyebrow">Section 05</p>
+    <h2 class="section-title">Chain of Command & Rank Structure</h2>
+
+    <p style="color: var(--text-dim); font-size: 14px; margin-bottom: 32px; line-height: 1.9;">
+      The Bureau operates on a clearly defined rank structure across six career tracks. All agents are expected to know their position in the hierarchy and conduct themselves accordingly. Promotion is earned through performance, adherence to protocol, and recommendation by superior officers.
+    </p>
+
+    <!-- QUICK CHAIN -->
+    <p class="section-eyebrow" style="margin-bottom:16px;">Quick Reference — Command Chain</p>
+    <div class="command-chain" style="margin-bottom:48px;">
+      <div class="command-node top"><div class="command-node-inner"><span class="command-node-title">Director</span><span class="command-node-grade">Executive Level I</span></div></div>
+      <div class="command-node"><div class="command-node-inner"><span class="command-node-title">Deputy Director</span><span class="command-node-grade">SES</span></div></div>
+      <div class="command-node"><div class="command-node-inner"><span class="command-node-title">Executive Assistant Director (EAD)</span><span class="command-node-grade">SES</span></div></div>
+      <div class="command-node"><div class="command-node-inner"><span class="command-node-title">Assistant Director</span><span class="command-node-grade">SES</span></div></div>
+      <div class="command-node"><div class="command-node-inner"><span class="command-node-title">Special Agent in Charge (SAC)</span><span class="command-node-grade">GS-15 / SES</span></div></div>
+      <div class="command-node"><div class="command-node-inner"><span class="command-node-title">Assistant Special Agent in Charge (ASAC)</span><span class="command-node-grade">GS-15</span></div></div>
+      <div class="command-node"><div class="command-node-inner"><span class="command-node-title">Supervisory Special Agent</span><span class="command-node-grade">GS-14</span></div></div>
+      <div class="command-node"><div class="command-node-inner"><span class="command-node-title">Senior Special Agent / Master Special Agent</span><span class="command-node-grade">GS-13</span></div></div>
+      <div class="command-node"><div class="command-node-inner"><span class="command-node-title">Special Agent</span><span class="command-node-grade">GS-12</span></div></div>
+      <div class="command-node"><div class="command-node-inner"><span class="command-node-title">Special Agent Probationary</span><span class="command-node-grade">GS-11</span></div></div>
+      <div class="command-node"><div class="command-node-inner"><span class="command-node-title">New Agent Trainee</span><span class="command-node-grade">GS-10</span></div></div>
+    </div>
+
+    <!-- TRACK 1 -->
+    <div class="track-header">
+      <div class="track-icon">🕵️</div>
+      <div class="track-title-group">
+        <div class="track-label">Track 01</div>
+        <div class="track-name">Investigative Field Track</div>
+      </div>
+      <div class="track-range">GS-10 → GS-13</div>
+    </div>
+    <p style="color:var(--text-dim); font-size:13.5px; margin-bottom:16px;">Frontline investigators handling active intelligence, cyber, and criminal cases in the field.</p>
+    <div class="rank-list">
+      <div class="rank-card"><div class="rank-gs">GS-10</div><div class="rank-info"><div class="rank-title-text">New Agent Trainee</div><div class="rank-desc">A recruit undergoing basic training at the FBI Academy in Quantico. Not yet cleared for independent field operations.</div></div></div>
+      <div class="rank-card"><div class="rank-gs">GS-11</div><div class="rank-info"><div class="rank-title-text">Special Agent Probationary</div><div class="rank-desc">A newly assigned agent completing first-year field evaluations under direct supervisory oversight.</div></div></div>
+      <div class="rank-card"><div class="rank-gs">GS-12</div><div class="rank-info"><div class="rank-title-text">Special Agent</div><div class="rank-desc">A fully certified agent managing standard federal investigations. The operational backbone of the Bureau.</div></div></div>
+      <div class="rank-card"><div class="rank-gs">GS-13</div><div class="rank-info"><div class="rank-title-text">Senior Special Agent</div><div class="rank-desc">An experienced field agent managing complex, multi-jurisdictional cases with significant operational autonomy.</div></div></div>
+      <div class="rank-card"><div class="rank-gs">GS-13</div><div class="rank-info"><div class="rank-title-text">Master Special Agent</div><div class="rank-desc">A veteran operative who guides junior agents and serves as a field training officer. Highest non-specialist field rank.</div></div></div>
+    </div>
+
+    <!-- TRACK 2 -->
+    <div class="track-header">
+      <div class="track-icon">🧠</div>
+      <div class="track-title-group">
+        <div class="track-label">Track 02</div>
+        <div class="track-name">Specialized & Expert Track</div>
+      </div>
+      <div class="track-range">GS-14</div>
+    </div>
+    <p style="color:var(--text-dim); font-size:13.5px; margin-bottom:16px;">Career field agents who remain non-supervisory but operate as technical experts of the highest caliber.</p>
+    <div class="rank-list">
+      <div class="rank-card"><div class="rank-gs">GS-14</div><div class="rank-info"><div class="rank-title-text">Special Agent — Subject Matter Expert</div><div class="rank-desc">An operative possessing advanced, niche technical credentials in a critical area of Bureau operations.</div></div></div>
+      <div class="rank-card"><div class="rank-gs">GS-14</div><div class="rank-info"><div class="rank-title-text">Senior Technical Specialist</div><div class="rank-desc">An expert handling highly complex cyber, financial, or counterintelligence data analysis.</div></div></div>
+      <div class="rank-card"><div class="rank-gs">GS-14</div><div class="rank-info"><div class="rank-title-text">Principal Investigator</div><div class="rank-desc">A non-supervisory lead assigned to massive national security files requiring deep domain expertise.</div></div></div>
+      <div class="rank-card"><div class="rank-gs">GS-14</div><div class="rank-info"><div class="rank-title-text">Senior Cryptologic Agent</div><div class="rank-desc">A specialized operative focused on deep-level data decryption and cyber warfare countermeasures.</div></div></div>
+      <div class="rank-card"><div class="rank-gs">GS-14</div><div class="rank-info"><div class="rank-title-text">Tactical Operations Specialist</div><div class="rank-desc">A highly trained expert coordinating specialized physical assets or hazardous materials responses.</div></div></div>
+    </div>
+
+    <!-- TRACK 3 -->
+    <div class="track-header">
+      <div class="track-icon">👥</div>
+      <div class="track-title-group">
+        <div class="track-label">Track 03</div>
+        <div class="track-name">Supervisory Management Track</div>
+      </div>
+      <div class="track-range">GS-14 → GS-15</div>
+    </div>
+    <p style="color:var(--text-dim); font-size:13.5px; margin-bottom:16px;">Field operatives who have transitioned into leadership roles overseeing field personnel and local operations.</p>
+    <div class="rank-list">
+      <div class="rank-card"><div class="rank-gs">GS-14</div><div class="rank-info"><div class="rank-title-text">Supervisory Special Agent — Squad Leader</div><div class="rank-desc">Manages a specific field unit, such as a local bank robbery or counterterrorism squad.</div></div></div>
+      <div class="rank-card"><div class="rank-gs">GS-14</div><div class="rank-info"><div class="rank-title-text">Supervisory Special Agent — Unit Chief</div><div class="rank-desc">Coordinates multi-squad task forces within a regional office.</div></div></div>
+      <div class="rank-card"><div class="rank-gs">GS-15</div><div class="rank-info"><div class="rank-title-text">ASAC — Operations</div><div class="rank-desc">Directs field operational activities across an assigned territory. Deputy commander of a field division.</div></div></div>
+      <div class="rank-card"><div class="rank-gs">GS-15</div><div class="rank-info"><div class="rank-title-text">ASAC — Administration</div><div class="rank-desc">Oversees the local support structure, hiring pipeline, and technical infrastructure.</div></div></div>
+      <div class="rank-card"><div class="rank-gs">GS-15</div><div class="rank-info"><div class="rank-title-text">Legal Attaché — Deputy Chief</div><div class="rank-desc">Manages regional operations within an international embassy post.</div></div></div>
+    </div>
+
+    <!-- TRACK 4 -->
+    <div class="track-header">
+      <div class="track-icon">🛡️</div>
+      <div class="track-title-group">
+        <div class="track-label">Track 04</div>
+        <div class="track-name">Senior Supervisory Rank</div>
+      </div>
+      <div class="track-range">GS-15</div>
+    </div>
+    <p style="color:var(--text-dim); font-size:13.5px; margin-bottom:16px;">Elite managers controlling large divisions, regional assets, or crucial headquarters units.</p>
+    <div class="rank-list">
+      <div class="rank-card"><div class="rank-gs">GS-15</div><div class="rank-info"><div class="rank-title-text">Section Chief</div><div class="rank-desc">Oversees multiple operational branches within a major headquarters bureau.</div></div></div>
+      <div class="rank-card"><div class="rank-gs">GS-15</div><div class="rank-info"><div class="rank-title-text">Legal Attaché — Chief</div><div class="rank-desc">The senior FBI diplomat leading an entire international office.</div></div></div>
+      <div class="rank-card"><div class="rank-gs">GS-15</div><div class="rank-info"><div class="rank-title-text">Special Agent in Charge — Small Field Office</div><div class="rank-desc">The chief executive managing a smaller regional FBI office.</div></div></div>
+      <div class="rank-card"><div class="rank-gs">GS-15</div><div class="rank-info"><div class="rank-title-text">Strategic Operations Chief</div><div class="rank-desc">Coordinates macro-level responses across various domestic field offices.</div></div></div>
+      <div class="rank-card"><div class="rank-gs">GS-15</div><div class="rank-info"><div class="rank-title-text">Chief Compliance Officer</div><div class="rank-desc">Directs internal audits, policy standards, and legal compliance teams Bureau-wide.</div></div></div>
+    </div>
+
+    <!-- TRACK 5 -->
+    <div class="track-header">
+      <div class="track-icon">🏢</div>
+      <div class="track-title-group">
+        <div class="track-label">Track 05</div>
+        <div class="track-name">Field Executive Command</div>
+      </div>
+      <div class="track-range">SES</div>
+    </div>
+    <p style="color:var(--text-dim); font-size:13.5px; margin-bottom:16px;">Executives overseeing major metropolitan hubs and vast geographical territories. Senior Executive Service.</p>
+    <div class="rank-list">
+      <div class="rank-card"><div class="rank-gs">SES</div><div class="rank-info"><div class="rank-title-text">Special Agent in Charge — Large Field Office</div><div class="rank-desc">Commands high-profile offices such as Los Angeles, Chicago, or Miami.</div></div></div>
+      <div class="rank-card"><div class="rank-gs">SES</div><div class="rank-info"><div class="rank-title-text">ADIC — New York</div><div class="rank-desc">Coordinates operations for the uniquely large and high-volume New York Field Office.</div></div></div>
+      <div class="rank-card"><div class="rank-gs">SES</div><div class="rank-info"><div class="rank-title-text">ADIC — Washington</div><div class="rank-desc">Directs operations for the high-priority Washington Field Office adjacent to HQ.</div></div></div>
+      <div class="rank-card"><div class="rank-gs">SES</div><div class="rank-info"><div class="rank-title-text">ADIC — Los Angeles</div><div class="rank-desc">Directs intelligence and criminal divisions across Southern California.</div></div></div>
+      <div class="rank-card"><div class="rank-gs">SES</div><div class="rank-info"><div class="rank-title-text">Regional Executive Director</div><div class="rank-desc">Coordinates major task forces spanning multiple state borders.</div></div></div>
+    </div>
+
+    <!-- TRACK 6 -->
+    <div class="track-header">
+      <div class="track-icon">🏛️</div>
+      <div class="track-title-group">
+        <div class="track-label">Track 06</div>
+        <div class="track-name">Headquarters Executive Leadership</div>
+      </div>
+      <div class="track-range">SES / EX-I</div>
+    </div>
+    <p style="color:var(--text-dim); font-size:13.5px; margin-bottom:16px;">The ultimate tier of policy, intelligence, and organizational management at FBI Headquarters.</p>
+    <div class="rank-list">
+      <div class="rank-card"><div class="rank-gs">SES</div><div class="rank-info"><div class="rank-title-text">Assistant Director</div><div class="rank-desc">Heads an entire operational division — Counterterrorism, Cyber, Criminal Investigations, etc.</div></div></div>
+      <div class="rank-card"><div class="rank-gs">SES</div><div class="rank-info"><div class="rank-title-text">Executive Assistant Director (EAD)</div><div class="rank-desc">Manages one of the Bureau's principal functional branches at the national level.</div></div></div>
+      <div class="rank-card"><div class="rank-gs">SES</div><div class="rank-info"><div class="rank-title-text">Associate Deputy Director</div><div class="rank-desc">Operates as the chief operating officer managing national Bureau infrastructure.</div></div></div>
+      <div class="rank-card"><div class="rank-gs">SES</div><div class="rank-info"><div class="rank-title-text">Deputy Director</div><div class="rank-desc">The second-in-command who handles daily global operations on behalf of the Director.</div></div></div>
+      <div class="rank-card" style="border-color: var(--accent-dim); background: var(--mid-blue);">
+        <div class="rank-gs" style="color: var(--seal-gold); border-color: var(--seal-gold); background: rgba(212,168,67,0.12);">EX-I</div>
+        <div class="rank-info">
+          <div class="rank-title-text" style="color: var(--accent);">Director of the FBI</div>
+          <div class="rank-desc">The presidential appointee running the entire Federal Bureau of Investigation. Ultimate authority within the Bureau. All personnel answer to the Director.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 6: GLOSSARY ── -->
+  <section id="glossary">
+    <p class="section-eyebrow">Section 06</p>
+    <h2 class="section-title">Bureau Glossary</h2>
+    <p style="color: var(--text-dim); font-size: 14px; margin-bottom: 24px;">Standard terminology used across all Bureau communications and roleplay environments.</p>
+
+    <div class="glossary-entry"><div class="glossary-term">IC</div><div class="glossary-def">In-Character — actions, dialogue, and behavior occurring within the roleplay scenario as your agent character.</div></div>
+    <div class="glossary-entry"><div class="glossary-term">OOC</div><div class="glossary-def">Out-of-Character — communication occurring outside the roleplay scenario, as the real person behind the character.</div></div>
+    <div class="glossary-entry"><div class="glossary-term">Metagaming</div><div class="glossary-def">Using knowledge your character could not realistically possess (typically OOC information) to influence IC decisions. Strictly prohibited.</div></div>
+    <div class="glossary-entry"><div class="glossary-term">Powergaming</div><div class="glossary-def">Performing actions your character could not realistically accomplish, or controlling another player's character without consent.</div></div>
+    <div class="glossary-entry"><div class="glossary-term">SAC</div><div class="glossary-def">Special Agent in Charge — the commanding officer of a field office.</div></div>
+    <div class="glossary-entry"><div class="glossary-term">ASAC</div><div class="glossary-def">Assistant Special Agent in Charge — the deputy commander of a field division.</div></div>
+    <div class="glossary-entry"><div class="glossary-term">ADIC</div><div class="glossary-def">Assistant Director in Charge — commands one of the three largest U.S. field offices.</div></div>
+    <div class="glossary-entry"><div class="glossary-term">EAD</div><div class="glossary-def">Executive Assistant Director — manages a principal functional branch at FBI Headquarters.</div></div>
+    <div class="glossary-entry"><div class="glossary-term">SES</div><div class="glossary-def">Senior Executive Service — the highest civil service classification, covering FBI executive leadership.</div></div>
+    <div class="glossary-entry"><div class="glossary-term">GS Grade</div><div class="glossary-def">General Schedule pay grade — the federal government classification system ranging GS-1 through GS-15, followed by SES and Executive levels.</div></div>
+    <div class="glossary-entry"><div class="glossary-term">Quantico</div><div class="glossary-def">The FBI Academy in Quantico, Virginia — where all new agent trainees complete their mandatory basic training.</div></div>
+    <div class="glossary-entry"><div class="glossary-term">HUMINT</div><div class="glossary-def">Human Intelligence — intelligence gathered through interpersonal contact and informant networks rather than technical surveillance.</div></div>
+    <div class="glossary-entry"><div class="glossary-term">Op-Sec</div><div class="glossary-def">Operational Security — the practice of protecting sensitive operational information from unauthorized disclosure.</div></div>
+  </section>
+
+  <!-- ── SECTION 7: OATH ── -->
+  <section id="oath">
+    <p class="section-eyebrow">Section 07</p>
+    <h2 class="section-title">The Agent's Oath</h2>
+
+    <p style="color: var(--text-dim); font-size: 14px; margin-bottom: 32px; line-height: 1.9;">
+      Upon completion of training and acceptance into the Bureau, all agents affirm the following oath. This commitment is not ceremonial — it defines the standard to which every member of this organization is held, every day, in every action.
+    </p>
+
+    <div class="oath-block">
+      <p class="oath-text">
+        "I do solemnly swear that I will uphold the honor and integrity of the Federal Bureau of Investigation — that I will serve the Bureau and its mission with Fidelity, Bravery, and Integrity; that I will respect the chain of command and the badge I carry; that I will safeguard the operations, the agents, and the mission entrusted to my care; and that I will hold myself to the highest standard of conduct, in the field, and in all matters of the Bureau, so help me."
+      </p>
+      <p class="oath-attribution">— Affirmed upon induction into the Federal Bureau of Investigation</p>
+    </div>
+
+    <div class="notice" style="margin-top: 12px;">
+      By participating in Bureau operations, all agents implicitly reaffirm this oath. Your badge is a privilege — protect it.
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-seal">Federal Bureau of Investigation</div>
+  <div class="footer-sub">
+    GR:PC Roleplay Server &nbsp;·&nbsp; Internal Document — Not for External Distribution<br>
+    Fidelity &nbsp;·&nbsp; Bravery &nbsp;·&nbsp; Integrity<br>
+    <span style="color: var(--accent-dim);">All agents are bound by the contents of this handbook.</span>
+  </div>
+</footer>
+
+</body>
+</html>
