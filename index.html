@@ -490,13 +490,34 @@ a{color:var(--ice2);text-decoration:none}
 .cert-seal{position:absolute;right:4%;top:-8px;width:116px;height:116px;border-radius:50%;border:2.5px solid #9a2030;display:grid;place-items:center;text-align:center;color:#9a2030;transform:rotate(-13deg);opacity:.82;box-shadow:inset 0 0 0 4px rgba(154,32,48,.16)}
 .cert-seal .st{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:11px;letter-spacing:.12em;line-height:1.25}
 .cert-seal .star{font-size:15px;margin:1px 0}
+.cert-stamp{width:fit-content;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:5px;padding:13px 22px 11px;border:2.5px solid #1a3a64;border-radius:13px;box-shadow:inset 0 0 0 3px rgba(26,58,100,.16);color:#1a3a64;background:rgba(26,58,100,.035);transform:rotate(-6deg)}
+.cert-stamp .cs-badge{width:50px;height:50px;background:var(--logo) center/contain no-repeat}
+.cert-stamp .cs-pass{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:18px;letter-spacing:.2em;text-indent:.2em;line-height:1}
+.cert-stamp .cs-sub{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.14em;text-indent:.14em;text-transform:uppercase;color:#456194}
+.cert-stamps{display:flex;gap:16px;align-items:flex-start;justify-content:center;flex:none}
+.cert-stamps .cert-sig{flex:0 0 auto;min-width:116px;max-width:150px}
+.cert-sig .cert-seal{position:static;margin:0 auto;width:96px;height:96px;transform:rotate(-7deg)}
+.cert-sig .rl.stamp-cap{margin-top:11px;letter-spacing:.06em;line-height:1.55}
 .cert-foot{margin-top:28px;padding-top:14px;border-top:1px solid #c9bfa6;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:#8a7d5e;line-height:1.65}
 @media(max-width:640px){
   .cert-meta{grid-template-columns:repeat(2,1fr)}
   .cert-seal{position:static;margin:6px auto 0;transform:rotate(-5deg)}
   .cert-sign{flex-direction:column;align-items:center}
 }
+/* full-screen certificate stage */
+.cert-stage{position:fixed;inset:0;z-index:9999;background:radial-gradient(120% 90% at 50% 0%,#0b1120,#04070d);display:none;flex-direction:column}
+.cert-stage.on{display:flex}
+.stage-bar{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.08);flex-wrap:wrap;background:rgba(5,8,14,.65)}
+.stage-bar .spacer{flex:1}
+.stage-bar .stg-hint{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text2)}
+.stage-scroll{flex:1;overflow:auto;display:flex;align-items:flex-start;justify-content:center;padding:clamp(14px,4vw,46px)}
+.stage-scroll .cert{flex:none}
+/* copy & paste hub */
+.pstack{display:flex;flex-direction:column;gap:14px}
+.tpl .ptitle{align-items:center}
+.tnum{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ice);border:1px solid rgba(91,157,255,.35);border-radius:6px;padding:3px 7px;margin-right:1px}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
 <div class="grid-bg"></div>
@@ -538,9 +559,9 @@ a{color:var(--ice2);text-decoration:none}
       <button class="navitem" data-mod="preop">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 3h6v3H9z"/><path d="M8 11l2 2 4-4"/><path d="M8 17h6"/></svg>
         Pre-Op<span class="code">01</span></button>
-      <button class="navitem" data-mod="dispatch">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="2.5"/><path d="M6.3 6.3a8 8 0 000 11.4M17.7 6.3a8 8 0 010 11.4M3.5 3.5a12 12 0 000 17M20.5 3.5a12 12 0 010 17"/></svg>
-        Dispatch<span class="code">02</span></button>
+      <button class="navitem" data-mod="paste">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="8" y="3" width="13" height="13" rx="2"/><path d="M16 16v3a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h3"/></svg>
+        Copy &amp; Paste<span class="code">02</span></button>
       <button class="navitem" data-mod="briefing">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l14-7v16L3 13z"/><path d="M17 8a4 4 0 010 8"/><path d="M5 13v4a2 2 0 002 2h2"/></svg>
         Briefing<span class="code">03</span></button>
@@ -550,12 +571,9 @@ a{color:var(--ice2);text-decoration:none}
       <button class="navitem" data-mod="knowledge">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4.5A2.5 2.5 0 016.5 2H20v18H6.5A2.5 2.5 0 004 22.5z"/><path d="M4 17.5A2.5 2.5 0 016.5 15H20"/></svg>
         Knowledge<span class="code">05</span></button>
-      <button class="navitem" data-mod="logging">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></svg>
-        Logging<span class="code">06</span></button>
       <button class="navitem" data-mod="recognition">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="9" r="6"/><path d="M9 14l-2 7 5-3 5 3-2-7"/></svg>
-        Recognition<span class="code">07</span></button>
+        Recognition<span class="code">06</span></button>
 
       <div class="unitcard">
         <div class="ut">Unit Status</div>
@@ -690,47 +708,44 @@ a{color:var(--ice2);text-decoration:none}
       </section>
 
       <!-- ============ DISPATCH ============ -->
-      <section class="module" id="m-dispatch">
+      <!-- ============ COPY & PASTE ============ -->
+      <section class="module" id="m-paste">
         <div class="mhead">
-          <div class="eye">Module 02 · Training Notice</div>
-          <h1>Dispatch Broadcast</h1>
-          <p>Build the training notice for <span class="kk">#training-notice</span>. Fill the fields and the formatted broadcast assembles live — then copy it straight into the channel.</p>
+          <div class="eye">Module 02 · Copy &amp; Paste</div>
+          <h1>Copy &amp; Paste</h1>
+          <p>Every message you send during a training, gathered in one place and in the order you use them. Tap <b>Copy</b>, paste into Discord, then fill in the <span class="kk">[bracketed]</span> parts.</p>
           <div class="mcode">MDT-02</div>
         </div>
 
-        <div class="grid g2">
-          <div class="panel">
-            <div class="ptitle"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v10H7l-3 3z"/><path d="M8 9h8M8 12h5"/></svg>Compose Notice</div>
-            <div class="form">
-              <div class="field"><label>Host</label><input id="d-host" value="@Yourself" placeholder="@Yourself"></div>
-              <div class="field"><label>Co-Host</label><input id="d-cohost" value="N/A" placeholder="@Co-host or N/A"></div>
-              <div class="field"><label>Location</label><input id="d-loc" value="Whitelisted Department Briefing Room" placeholder="Briefing room"></div>
-              <div class="field"><label>Voice Channel</label><input id="d-vc" value="Training VC 1" placeholder="Paste VC link / channel"></div>
-              <div class="field"><label>Pings</label><input id="d-ping" value="@MPD | Trainee" placeholder="@MPD | Trainee"></div>
-            </div>
+        <div class="callout info" style="margin-bottom:16px">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
+          <div class="t">Work top to bottom: post the <b>notice</b> before you start, read the <b>briefing</b>, send the <b>quiz</b> to group sessions, then file the <b>results</b> at the end. The Evaluation panel can auto-fill the results log for you.</div>
+        </div>
+
+        <div class="pstack">
+          <div class="panel tpl">
+            <div class="ptitle"><span class="tnum">01</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a8 8 0 00-8 8v4l-2 3h20l-2-3v-4a8 8 0 00-8-8z"/><path d="M9 21a3 3 0 006 0"/></svg>Training Notice<span class="tag">#training-notice</span></div>
+            <div class="out" id="tpl-notice"></div>
+            <div class="copyrow"><button class="btn sm pri" data-copy="tpl-notice" data-msg="m-notice"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg>Copy Notice</button><span class="msg" id="m-notice">✓ Copied</span></div>
           </div>
-          <div class="stack">
-            <div class="panel">
-              <div class="ptitle"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a8 8 0 00-8 8v4l-2 3h20l-2-3v-4a8 8 0 00-8-8z"/><path d="M9 21a3 3 0 006 0"/></svg>Live Preview</div>
-              <div class="embed">
-                <div class="ehdr"><div class="av"></div><span class="nm">MPD-47</span><span class="bt">APP</span><span class="tm" id="d-time">11:33 AM</span></div>
-                <div class="etitle">🔔 MPDC Training</div>
-                <div class="efield"><span class="lab">Host</span><span class="val" id="o-host">@Yourself</span></div>
-                <div class="efield"><span class="lab">Co Host</span><span class="val" id="o-cohost">N/A</span></div>
-                <div class="efield"><span class="lab">Location</span><span class="val" id="o-loc">Whitelisted Department Briefing Room</span></div>
-                <div class="efield"><span class="lab">VC</span><span class="val" id="o-vc">Training VC 1</span></div>
-                <div class="efield"><span class="lab">Pings</span><span class="val ping" id="o-ping">@MPD | Trainee</span></div>
-                <div class="enote"><b>Notes:</b> This training is a requirement to begin your progression inside the Metropolitan Police Department.<br><span class="dim">Trainees must already be whitelisted in the PRPC server to join.</span></div>
-              </div>
-            </div>
-            <div class="panel">
-              <div class="ptitle"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg>Plain Text<span class="tag">COPY READY</span></div>
-              <div class="out" id="d-out"></div>
-              <div class="copyrow">
-                <button class="btn sm pri" id="d-copy"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg>Copy Notice</button>
-                <span class="msg" id="d-msg">✓ Copied to clipboard</span>
-              </div>
-            </div>
+
+          <div class="panel tpl">
+            <div class="ptitle"><span class="tnum">02</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l14-7v16L3 13z"/><path d="M17 8a4 4 0 010 8"/></svg>Opening Briefing<span class="tag">SAY TO TRAINEES</span></div>
+            <div class="out" id="tpl-brief"></div>
+            <div class="copyrow"><button class="btn sm pri" data-copy="tpl-brief" data-msg="m-brief"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg>Copy Briefing</button><span class="msg" id="m-brief">✓ Copied</span></div>
+          </div>
+
+          <div class="panel tpl">
+            <div class="ptitle"><span class="tnum">03</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3 7-7"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Group Quiz<span class="tag">SEND TO TRAINEE CHAT</span></div>
+            <div class="out" id="tpl-quiz"></div>
+            <div class="copyrow"><button class="btn sm pri" data-copy="tpl-quiz" data-msg="m-quiz"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg>Copy Quiz</button><span class="msg" id="m-quiz">✓ Copied</span></div>
+          </div>
+
+          <div class="panel tpl">
+            <div class="ptitle"><span class="tnum">04</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>Results Log<span class="tag">#training-results</span></div>
+            <div class="out" id="tpl-results"></div>
+            <div class="copyrow"><button class="btn sm pri" data-copy="tpl-results" data-msg="m-results"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg>Copy Results</button><span class="msg" id="m-results">✓ Copied</span></div>
+            <p class="muted" style="margin-top:12px;font-size:12.5px">Tip: score everyone in the <b>Evaluation</b> panel, then <b>Record → Copy Results Log</b> hands you this same log already filled in. Swap <span class="kk">#forms</span> / <span class="kk">#rank-up</span> for your server's real channels.</p>
           </div>
         </div>
       </section>
@@ -878,9 +893,12 @@ a{color:var(--ice2);text-decoration:none}
         <div class="evstate" id="st-report">
           <div class="repbar">
             <button class="btn sm ghost" id="rep-back"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Back to Scoring</button>
+            <span class="rephint">Full Screen gives the sharpest screenshot</span>
             <div class="spacer"></div>
-            <span class="rephint">Screenshot the document below for your <span class="kk">#training-results</span> log</span>
-            <button class="btn sm" id="rep-copy"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg>Copy Text</button>
+            <button class="btn pri sm" id="fs-open"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 00-2 2v3M16 3h3a2 2 0 012 2v3M8 21H5a2 2 0 01-2-2v-3M16 21h3a2 2 0 002-2v-3"/></svg>Full Screen</button>
+            <button class="btn sm" id="img-copy"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>Copy Image</button>
+            <button class="btn sm" id="img-save"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 11l5 4 5-4M5 21h14"/></svg>Save PNG</button>
+            <button class="btn sm" id="rep-copy"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg>Copy Results Log</button>
             <span class="msg" id="rep-msg">✓ Copied</span>
           </div>
           <div class="desk"><div class="cert" id="cert"></div></div>
@@ -948,50 +966,13 @@ a{color:var(--ice2);text-decoration:none}
         </div>
       </section>
 
-      <!-- ============ LOGGING ============ -->
-      <section class="module" id="m-logging">
-        <div class="mhead">
-          <div class="eye">Module 06 · After-Action</div>
-          <h1>Training Log</h1>
-          <p>File the result in <span class="kk">#training-results</span>. Fill the fields below and the terminal formats a complete log — attendees, notes, and proofs — ready to paste.</p>
-          <div class="mcode">MDT-06</div>
-        </div>
-
-        <div class="grid g2">
-          <div class="panel">
-            <div class="ptitle"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>Compose Log</div>
-            <div class="form">
-              <div class="field"><label>Host</label><input id="l-host" placeholder="Your Roblox username"></div>
-              <div class="field"><label>Attendees — full Roblox usernames</label><textarea id="l-att" placeholder="One per line"></textarea></div>
-              <div class="field"><label>Passed — ping these trainees</label><textarea id="l-pass" placeholder="One per line"></textarea></div>
-              <div class="field"><label>Notes — behavior · scores · strikes</label><textarea id="l-notes" placeholder="Short summary of each trainee"></textarea></div>
-              <div class="field"><label>Proofs — starting photo + wedge</label><input id="l-proof" placeholder="Paste image links"></div>
-            </div>
-          </div>
-          <div class="stack">
-            <div class="callout info">
-              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
-              <div class="t">Include <b>every</b> trainee in attendees, but only <b>ping those who passed</b>. The two photos — wide start + wedge — confirm attendance and prevent free ranking.</div>
-            </div>
-            <div class="panel">
-              <div class="ptitle"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg>Formatted Log<span class="tag">COPY READY</span></div>
-              <div class="out" id="l-out"><span class="ph">Fill the fields to generate the log…</span></div>
-              <div class="copyrow">
-                <button class="btn sm pri" id="l-copy"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg>Copy Log</button>
-                <span class="msg" id="l-msg">✓ Copied to clipboard</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <!-- ============ RECOGNITION ============ -->
       <section class="module" id="m-recognition">
         <div class="mhead">
-          <div class="eye">Module 07 · Closing</div>
+          <div class="eye">Module 06 · Closing</div>
           <h1>Recognition</h1>
           <p>Back at the WL PD, return to the briefing room to congratulate everyone who passed and capture proof before dismissal.</p>
-          <div class="mcode">MDT-07</div>
+          <div class="mcode">MDT-06</div>
         </div>
 
         <div class="panel glow">
@@ -1006,12 +987,12 @@ a{color:var(--ice2);text-decoration:none}
         </div>
 
         <div class="callout warn" style="margin-top:16px">
-          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
-          <div class="t"><b>Proof matters.</b> The wedge screenshot is mandatory and feeds straight into the Logging module — no proof, no ranking.</div>
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          <div class="t"><b>Please don't forget</b> to change the trainee's nickname, and ask them to join Melonly and request a callsign.</div>
         </div>
         <div class="callout info" style="margin-top:12px">
           <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          <div class="t">Session complete. Head to <b>Logging</b> to file your after-action report and close out the training.</div>
+          <div class="t">Session complete. Score everyone in the <b>Evaluation</b> panel, then post the results log from <b>Copy &amp; Paste</b>.</div>
         </div>
 
         <div class="foot">
@@ -1027,6 +1008,19 @@ a{color:var(--ice2);text-decoration:none}
     </main>
   </div>
 </div>
+
+      <!-- full-screen certificate stage -->
+      <div class="cert-stage" id="cert-stage" role="dialog" aria-modal="true" aria-label="Certificate — full screen">
+        <div class="stage-bar">
+          <button class="btn sm ghost" id="stg-exit"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>Exit</button>
+          <span class="stg-hint">Take a screenshot now — or use:</span>
+          <div class="spacer"></div>
+          <button class="btn sm" id="stg-copy"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>Copy Image</button>
+          <button class="btn sm" id="stg-save"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 11l5 4 5-4M5 21h14"/></svg>Save PNG</button>
+          <span class="msg" id="stg-msg">✓</span>
+        </div>
+        <div class="stage-scroll"><div class="cert" id="stage-cert"></div></div>
+      </div>
 
 <script>
 (function(){
@@ -1056,7 +1050,7 @@ a{color:var(--ice2);text-decoration:none}
     const lines=[
       'INITIALIZING WMPD MDT KERNEL ...',
       'MOUNTING <span class="c">/protocol/handbook-rev2</span> ... <b>OK</b>',
-      'LOADING DISPATCH MODULES [00–07] ... <b>OK</b>',
+      'LOADING DISPATCH MODULES [00–06] ... <b>OK</b>',
       'SYNC TRAINING-NOTICE CHANNEL ... <b>OK</b>',
       'UNIT <span class="c">MPD-47</span> AUTHENTICATED',
       'STATUS: <b>10-8 IN SERVICE</b>'
@@ -1081,29 +1075,15 @@ a{color:var(--ice2);text-decoration:none}
   $$('.navitem').forEach(b=>b.addEventListener('click',()=>show(b.dataset.mod)));
   $$('[data-go]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.go)));
 
-  /* ---- dispatch composer ---- */
-  const dmap=[['d-host','o-host','@Yourself'],['d-cohost','o-cohost','N/A'],['d-loc','o-loc','—'],['d-vc','o-vc','—'],['d-ping','o-ping','@MPD | Trainee']];
-  function dRender(){
-    dmap.forEach(([inp,out,ph])=>{ const v=$('#'+inp).value.trim(); $('#'+out).textContent=v||ph; });
-    const g=id=>$('#'+id).value.trim();
-    const t=`🔔 | MPDC Training\n\nHost: ${g('d-host')||'@Yourself'}\nCo Host: ${g('d-cohost')||'N/A'}\nLocation: ${g('d-loc')||'Briefing Room'}\nVC: ${g('d-vc')||'—'}\nPings: ${g('d-ping')||'@MPD | Trainee'}\n\nNotes: This training is a requirement to begin your progression inside the Metropolitan Police Department. Trainees must already be whitelisted in the PRPC server to join.`;
-    $('#d-out').textContent=t;
-  }
-  dmap.forEach(([inp])=>$('#'+inp).addEventListener('input',dRender));
-  (function(){ const d=new Date();let h=d.getHours();const m=String(d.getMinutes()).padStart(2,'0');const ap=h>=12?'PM':'AM';h=h%12||12;$('#d-time').textContent=`${h}:${m} ${ap}`;})();
-  dRender();
-
-  /* ---- log composer ---- */
-  function bullets(id){ return $('#'+id).value.split('\n').map(s=>s.trim()).filter(Boolean); }
-  function lRender(){
-    const host=$('#l-host').value.trim();
-    const att=bullets('l-att'), pass=bullets('l-pass');
-    const notes=$('#l-notes').value.trim(), proof=$('#l-proof').value.trim();
-    if(!host&&!att.length&&!notes&&!proof){ $('#l-out').innerHTML='<span class="ph">Fill the fields to generate the log…</span>'; return; }
-    let t=`🛡️ | MPD TRAINING LOG\n\nHost: ${host||'—'}\n\nAttendees:\n${att.length?att.map(a=>'• '+a).join('\n'):'—'}\n\nPassed (ping):\n${pass.length?pass.map(a=>'@ '+a).join('\n'):'—'}\n\nNotes:\n${notes||'—'}\n\nProofs:\n${proof||'[ starting screenshot + wedge ]'}`;
-    $('#l-out').textContent=t;
-  }
-  ['l-host','l-att','l-pass','l-notes','l-proof'].forEach(id=>$('#'+id).addEventListener('input',lRender));
+  /* ---- copy & paste hub ---- */
+  const TPL={
+    notice:`🔔 | MPDC Training\n\nHost: @[your username]\nCo Host: N/A\nAttendees: @MPD | Trainee\n\nLocation: Whitelisted Department Briefing Room\nVC: Training VC 1\n\nNotes: This training is a requirement to begin your progression inside the Metropolitan Police Department. Trainees must already be whitelisted in the PRPC server to join.`,
+    brief:`Welcome to your Washington MPD training. I am your host, [USERNAME].\n\nPermission to speak is active — ask before speaking, and use SPaG at all times. Failure to do so is a strike; three strikes and you fail your training.\n\nYou will address me as Sir or Ma'am. Am I understood?\n\nThis training has four phases: a driving test, a shooting test, scenarios, and a live ride-along. Fail two of those phases and you fail the training.\n\nNow, let us proceed with the first phase.`,
+    quiz:`🧠 | MPDC Quiz — answer all three in full SPaG. You have 5 minutes.\n\n1. You are running Code 3 (lights and sirens) and turning onto a road where another officer, also running Code 3, will crash into you if you turn. You are on an emergency and on-duty. Do you still turn onto that road — and why?\n\n2. The President is about to be swarmed by multiple armed civilians at the White House, but you are currently in a Mod Scene. Do you assist the President or hold — and why?\n\n3. Can a Washington Metropolitan Police Department officer protect the President — why or why not?`,
+    results:`🛡️ | MPDC Results\n\nHost: @[your username]\nCo Host: N/A\nAttendees: @[the passers]\n\nPassed: [their grades here]\n\nNotes: [feedback on their performance]\n\nPlease fill out #forms & request your rank in #rank-up\n\nCongratulations, Officer!!`
+  };
+  ['notice','brief','quiz','results'].forEach(k=>{ const el=$('#tpl-'+k); if(el) el.textContent=TPL[k]; });
+  $$('[data-copy]').forEach(b=>b.addEventListener('click',()=>copy(b.dataset.copy,b.dataset.msg)));
 
   /* ---- copy ---- */
   function copy(srcId,msgId){
@@ -1113,8 +1093,6 @@ a{color:var(--ice2);text-decoration:none}
     else fallback(txt,done);
   }
   function fallback(txt,done){ const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');}catch(e){}ta.remove();done(); }
-  $('#d-copy').addEventListener('click',()=>copy('d-out','d-msg'));
-  $('#l-copy').addEventListener('click',()=>copy('l-out','l-msg'));
 
   /* ---- quiz reveal ---- */
   $$('[data-q]').forEach(b=>b.addEventListener('click',()=>b.closest('.qcard').classList.toggle('open')));
@@ -1304,15 +1282,19 @@ a{color:var(--ice2);text-decoration:none}
         <div class="cert-summary">Candidates Advanced — ${passed.length} of ${total}</div>
         <div class="cert-sign">
           <div class="cert-sig"><div class="nm">${escapeHTML(S.host||'Training Officer')}</div><div class="ln"></div><div class="rl">Host Officer · Signature</div></div>
-          <div class="cert-sig"><div class="nm">MasterCoop56</div><div class="ln"></div><div class="rl">Approved · MPD Admin+</div></div>
-          <div class="cert-seal"><div><div class="st">TRAINING</div><div class="star">★</div><div class="st">VERIFIED</div></div></div>
+          <div class="cert-stamps">
+            <div class="cert-sig"><div class="cert-stamp"><div class="cs-badge"></div><div class="cs-pass">PASSED</div></div><div class="rl stamp-cap">Department Pass · passing result</div></div>
+            <div class="cert-sig"><div class="cert-seal"><div><div class="st">TRAINING</div><div class="star">★</div><div class="st">VERIFIED</div></div></div><div class="rl stamp-cap">Training Verified · session logged</div></div>
+          </div>
         </div>
         <div class="cert-foot">Record generated ${now.toLocaleString()} · ${sid}<br>Attach to your #training-results log. Unofficial fan document for the President Roleplay Community Roblox group — not affiliated with the Metropolitan Police Department of the District of Columbia.</div>
       </div>`;
-    let txt=`WASHINGTON MPD — OFFICIAL TRAINING RECORD\nSession: ${sid}\nDate: ${S.date}\nHost: ${S.host}  |  Co-Host: ${S.cohost||'N/A'}\nLocation: ${S.loc||'WL Briefing Room'}\n\nADVANCED CANDIDATES (${passed.length}/${total}):\n`;
-    if(passed.length) passed.forEach((t,i)=>{ txt+=`${i+1}. ${t.name} — Drive ${t.scores[0]==null?'-':t.scores[0]} / Shoot ${t.scores[1]==null?'-':t.scores[1]} / Scene ${t.scores[2]==null?'-':t.scores[2]} / Patrol ${t.scores[3]==null?'-':t.scores[3]}  ·  Total ${totalOf(t)==null?'-':totalOf(t)}/40  [PASS]\n`; });
-    else txt+='None.\n';
-    txt+=`\nApproved — MasterCoop56 (MPD Admin+)`;
+    const pNames=passed.map(t=>t.name).filter(Boolean);
+    const attLine=pNames.length?pNames.map(n=>'@'+n).join(' '):'[ping the passers]';
+    let txt=`🛡️ | MPDC Results\n\nHost: ${S.host||'@[your username]'}\nCo Host: ${S.cohost||'N/A'}\nAttendees: ${attLine}\n\nPassed:\n`;
+    if(passed.length) passed.forEach(t=>{ txt+=`${t.name} — ${totalOf(t)==null?'-':totalOf(t)}/40  (Drive ${t.scores[0]==null?'-':t.scores[0]} · Shoot ${t.scores[1]==null?'-':t.scores[1]} · Scene ${t.scores[2]==null?'-':t.scores[2]} · Patrol ${t.scores[3]==null?'-':t.scores[3]})\n`; });
+    else txt+='None this session.\n';
+    txt+=`\nNotes: [feedback on their performance]\n\nPlease fill out #forms & request your rank in #rank-up\n\nCongratulations, Officer!!`;
     $('#cert').dataset.copy=txt;
   }
 
@@ -1322,6 +1304,44 @@ a{color:var(--ice2);text-decoration:none}
     const txt=$('#cert').dataset.copy||''; const done=()=>{const m=$('#rep-msg');m.classList.add('show');setTimeout(()=>m.classList.remove('show'),1800);};
     if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done).catch(()=>fallback(txt,done)); else fallback(txt,done);
   });
+})();
+</script>
+<script>
+(function(){
+  const $=s=>document.querySelector(s);
+  const cert=$('#cert'), stage=$('#cert-stage'), stageCert=$('#stage-cert');
+  if(!cert||!stage) return;
+  function flash(id,t){ const m=$(id); if(!m) return; m.textContent=t; m.classList.add('show'); clearTimeout(m._t); m._t=setTimeout(()=>m.classList.remove('show'),2400); }
+  function openStage(){ stageCert.className='cert'; stageCert.innerHTML=cert.innerHTML; stage.classList.add('on'); document.body.style.overflow='hidden'; if(stage.requestFullscreen){ stage.requestFullscreen().catch(()=>{}); } }
+  function closeStage(){ if(document.fullscreenElement&&document.exitFullscreen){ document.exitFullscreen().catch(()=>{}); } stage.classList.remove('on'); document.body.style.overflow=''; }
+  $('#fs-open')&&$('#fs-open').addEventListener('click',openStage);
+  $('#stg-exit')&&$('#stg-exit').addEventListener('click',closeStage);
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&stage.classList.contains('on')) closeStage(); });
+
+  function activeCert(){ return stage.classList.contains('on')?stageCert:cert; }
+  async function rasterize(){
+    if(typeof html2canvas==='undefined') throw new Error('nolib');
+    if(document.fonts&&document.fonts.ready){ try{ await document.fonts.ready; }catch(e){} }
+    return await html2canvas(activeCert(),{scale:2,backgroundColor:'#f6f3ea',useCORS:true,logging:false});
+  }
+  function fname(){ const d=new Date(),p=n=>String(n).padStart(2,'0'); return `MPD-training-record-${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}.png`; }
+  function dl(canvas,cb){ canvas.toBlob(b=>{ const u=URL.createObjectURL(b),a=document.createElement('a'); a.href=u; a.download=fname(); document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(u),1500); cb&&cb(); },'image/png'); }
+  async function save(mid){ try{ const c=await rasterize(); dl(c,()=>flash(mid,'✓ PNG saved')); }catch(e){ flash(mid, e.message==='nolib'?'Use Full Screen + screenshot':'Render failed — use Full Screen'); } }
+  async function copyImg(mid){
+    try{
+      const c=await rasterize();
+      const blob=await new Promise(r=>c.toBlob(r,'image/png'));
+      if(navigator.clipboard&&window.ClipboardItem){ await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]); flash(mid,'✓ Image copied'); }
+      else throw new Error('noclip');
+    }catch(e){
+      try{ const c=await rasterize(); dl(c,()=>flash(mid,'Copy blocked — PNG saved')); }
+      catch(e2){ flash(mid,'Use Full Screen + screenshot'); }
+    }
+  }
+  $('#img-save')&&$('#img-save').addEventListener('click',()=>save('#rep-msg'));
+  $('#img-copy')&&$('#img-copy').addEventListener('click',()=>copyImg('#rep-msg'));
+  $('#stg-save')&&$('#stg-save').addEventListener('click',()=>save('#stg-msg'));
+  $('#stg-copy')&&$('#stg-copy').addEventListener('click',()=>copyImg('#stg-msg'));
 })();
 </script>
 </body>
