@@ -516,6 +516,23 @@ a{color:var(--ice2);text-decoration:none}
 .pstack{display:flex;flex-direction:column;gap:14px}
 .tpl .ptitle{align-items:center}
 .tnum{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ice);border:1px solid rgba(91,157,255,.35);border-radius:6px;padding:3px 7px;margin-right:1px}
+/* line-by-line trainer script */
+.sgroup{display:flex;align-items:center;gap:9px;font-family:'Chakra Petch',sans-serif;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ice);margin:24px 0 4px;padding-bottom:7px;border-bottom:1px solid var(--line)}
+.sgroup:first-of-type{margin-top:4px}
+.sgroup .gx{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text2);border:1px solid var(--line);border-radius:5px;padding:2px 6px;letter-spacing:.05em}
+.sline{display:flex;align-items:flex-start;gap:12px;padding:11px 2px;border-bottom:1px dashed var(--line)}
+.sline:last-child{border-bottom:none}
+.sline .say{flex:1;font-size:15px;color:#e7eefb;line-height:1.62}
+.sline .say .hl{color:var(--ice2);font-weight:600}
+.sline .lc{flex:none;display:inline-flex;align-items:center;justify-content:center;width:32px;height:30px;background:rgba(91,157,255,.1);border:1px solid rgba(91,157,255,.3);color:var(--ice);border-radius:8px;cursor:pointer;transition:.15s;padding:0}
+.sline .lc:hover{background:rgba(91,157,255,.22);border-color:rgba(91,157,255,.55)}
+.sline .lc .ico{width:15px;height:15px}
+.sline .lcok{flex:none;align-self:center;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--mint);opacity:0;transition:.2s;min-width:12px}
+.sline .lcok.show{opacity:1}
+.sline.note{background:rgba(255,177,59,.05);border:1px dashed rgba(255,177,59,.28);border-radius:9px;padding:11px 14px;margin:6px 0}
+.sline.note .say{flex:1;font-size:13px;color:var(--amber);line-height:1.55}
+.sline.branch{background:rgba(91,157,255,.05);border:1px dashed rgba(91,157,255,.32);border-radius:9px;padding:11px 14px;margin:6px 0}
+.sline.branch .say{flex:1;font-size:13px;color:var(--ice2);line-height:1.55}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
@@ -668,10 +685,10 @@ a{color:var(--ice2);text-decoration:none}
             <div class="ph-sec">
               <div class="lab alt">Run Order</div>
               <div class="steplist">
-                <div class="stepl"><span class="num"></span><span class="txt">Post the notice in <span class="kk">#training-notice</span> — build it in the <b>Dispatch</b> module.</span></div>
+                <div class="stepl"><span class="num"></span><span class="txt">Post the notice in <span class="kk">#training-notice</span> — build it in the <b>Script</b> section.</span></div>
                 <div class="stepl"><span class="num"></span><span class="txt">Open the room and start the <b>10-minute</b> timer; answer attendee questions while you wait.</span></div>
                 <div class="stepl"><span class="num"></span><span class="txt">Once everyone is seated, take the <b>wide starting screenshot</b> — every trainee visible.</span></div>
-                <div class="stepl"><span class="num"></span><span class="txt">Lock the room and move to the opening <b>Briefing</b>.</span></div>
+                <div class="stepl"><span class="num"></span><span class="txt">Lock the room, then walk the <b>Trainer Script</b> in the Script section.</span></div>
               </div>
             </div>
           </div>
@@ -716,7 +733,7 @@ a{color:var(--ice2);text-decoration:none}
 
         <div class="callout info" style="margin-bottom:16px">
           <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
-          <div class="t">Work top to bottom: post the <b>notice</b>, read the <b>opening briefing</b>, send the <b>quiz</b>, read the <b>closing script</b> at dismissal, then file the <b>results</b>. The Evaluation panel can auto-fill the results log for you.</div>
+          <div class="t">Work top to bottom: post the <b>notice</b>, walk the <b>trainer script</b> (it covers the whole training — copy lines as you go), send the <b>quiz</b> when you reach it, then file the <b>results</b>. The Evaluation panel can auto-fill the results log for you.</div>
         </div>
 
         <div class="pstack">
@@ -727,29 +744,74 @@ a{color:var(--ice2);text-decoration:none}
           </div>
 
           <div class="panel tpl">
-            <div class="ptitle"><span class="tnum">02</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l14-7v16L3 13z"/><path d="M17 8a4 4 0 010 8"/></svg>Opening Briefing<span class="tag">SAY TO TRAINEES</span></div>
-            <div class="out" id="tpl-brief"></div>
-            <div class="copyrow"><button class="btn sm pri" data-copy="tpl-brief" data-msg="m-brief"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg>Copy Briefing</button><span class="msg" id="m-brief">✓ Copied</span></div>
+            <div class="ptitle"><span class="tnum">02</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l14-7v16L3 13z"/><path d="M17 8a4 4 0 010 8"/></svg>Trainer Script<span class="tag">COPY LINE BY LINE</span></div>
+            <p class="muted" style="margin:-2px 0 12px;font-size:12.5px">Every line you say across the whole training, in order. Tap the copy button on any line to grab just that one. Amber boxes are guidance for you — not lines to read aloud.</p>
+
+            <div class="sgroup"><span class="gx">01</span>Start of Training</div>
+            <div class="sline note"><span class="say">After locking your training and taking a wide starting screenshot, read the following lines.</span></div>
+            <div class="sline"><span class="say">Welcome to your Washington MPD training. I am your host, <span class="hl">[USERNAME]</span>.</span><button class="lc" title="Copy this line"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg></button><span class="lcok">✓</span></div>
+            <div class="sline"><span class="say">Permission to speak is active. If you wish to speak, you must ask for permission first, and you must use SPaG at all times — failure to do so results in a strike. Three strikes and you fail your training.</span><button class="lc" title="Copy this line"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg></button><span class="lcok">✓</span></div>
+            <div class="sline"><span class="say">You shall address me as Sir or Ma'am. Am I understood?</span><button class="lc" title="Copy this line"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg></button><span class="lcok">✓</span></div>
+            <div class="sline note"><span class="say">If a trainee answers with anything other than "Yes, Sir." or "Yes, Ma'am." — correct them before moving on.</span></div>
+            <div class="sline"><span class="say">This training consists of four phases: a driving test, a shooting test, fake scenarios, and a real ride-along.</span><button class="lc" title="Copy this line"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg></button><span class="lcok">✓</span></div>
+            <div class="sline"><span class="say">If you fail two of those phases, you will fail.</span><button class="lc" title="Copy this line"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg></button><span class="lcok">✓</span></div>
+            <div class="sline"><span class="say">Now, let us proceed with the first phase.</span><button class="lc" title="Copy this line"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg></button><span class="lcok">✓</span></div>
+            <div class="sline branch"><span class="say"><b>Branch:</b> multiple trainees → run the Quiz group below in place of the driving test. Single trainee → skip the quiz and go straight to the Driving Test.</span></div>
+
+            <div class="sgroup"><span class="gx">02</span>Quiz · Multiple Trainees</div>
+            <div class="sline"><span class="say">Since there are multiple of you, you will instead receive a quiz — always answer with SPaG. This is much easier, so good luck!</span><button class="lc" title="Copy this line"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg></button><span class="lcok">✓</span></div>
+            <div class="sline"><span class="say">Ping me in trainee chat so I can send you the quiz. You will have 5 minutes to answer. You may start when you receive them.</span><button class="lc" title="Copy this line"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg></button><span class="lcok">✓</span></div>
+            <div class="sline note"><span class="say">Send the three questions from the Group Quiz card below. Scoring lives in Knowledge — 2 of 3 to pass, wrong −1, missing SPaG −0.5, below 2 is a strike. Send results once everyone is done.</span></div>
+            <div class="sline"><span class="say">Since we are done with the quiz, I will still show you the basics of proper driving. Please follow me outside and get inside of my vehicle.</span><button class="lc" title="Copy this line"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg></button><span class="lcok">✓</span></div>
+            <div class="sline"><span class="say">We will now go to the movie theatre in Code 2, then to River City Guns store in Code 3.</span><button class="lc" title="Copy this line"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg></button><span class="lcok">✓</span></div>
+
+            <div class="sgroup"><span class="gx">03</span>Driving Test</div>
+            <div class="sline"><span class="say">Please go outside and spawn the issued vehicle for trainees. Make sure it has the MPD livery on it.</span><button class="lc" title="Copy this line"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg></button><span class="lcok">✓</span></div>
+            <div class="sline"><span class="say">Your first task is to drive to Springfield Movie Theatre in Code 2, then to River City Guns store in Code 3. Observe proper emergency driving.</span><button class="lc" title="Copy this line"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg></button><span class="lcok">✓</span></div>
+            <div class="sline"><span class="say">If you crash two times, it will result in a strike. Understood?</span><button class="lc" title="Copy this line"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg></button><span class="lcok">✓</span></div>
+            <div class="sline note"><span class="say">Strikes from the training rules and from the phases combine. Whenever a trainee earns a strike — at the intro or for SPaG — you MUST tell them their current total.</span></div>
+
+            <div class="sgroup"><span class="gx">04</span>Shooting Test</div>
+            <div class="sline"><span class="say">Now let's proceed inside and move to the shooting range. Follow me.</span><button class="lc" title="Copy this line"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg></button><span class="lcok">✓</span></div>
+            <div class="sline note"><span class="say">At River City Guns: solo trainee → the furthest dummy booth; a group → let them choose. Instruct them (your call), focused on marksmanship, then rate their skill out of 10 and note the score. Spend at least 3–5 minutes.</span></div>
+
+            <div class="sgroup"><span class="gx">05</span>Fake Scenarios</div>
+            <div class="sline"><span class="say">Now that we are done with the shooting test, we will now proceed with fake scenarios. Hop on the vehicle and get to the barn in Code 2.</span><button class="lc" title="Copy this line"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg></button><span class="lcok">✓</span></div>
+            <div class="sline"><span class="say">Now, let us proceed with the fake scenario.</span><button class="lc" title="Copy this line"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg></button><span class="lcok">✓</span></div>
+            <div class="sline note"><span class="say">Run 2–3 scenarios before moving on. Group multiple trainees as one and assign a Team Leader. Cuff-rushing or fail-roleplay = a strike. The criminal can be an MPD officer or the trainer; a scenario ends when the trainee says -cuffs- and states why the criminal is under arrest.</span></div>
+            <div class="sline"><span class="say">Congratulations on passing your fake scenarios! Now let us proceed with the last phase — the ride-along.</span><button class="lc" title="Copy this line"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg></button><span class="lcok">✓</span></div>
+
+            <div class="sgroup"><span class="gx">06</span>Ride-Along</div>
+            <div class="sline"><span class="say">Get inside the vehicle and drive around the city. You may pull people over, chase criminals, and assist at the White House, the border, or in the city.</span><button class="lc" title="Copy this line"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg></button><span class="lcok">✓</span></div>
+            <div class="sline"><span class="say">If you have any questions, you may ask now. If none, we'll proceed with the ride-along!</span><button class="lc" title="Copy this line"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg></button><span class="lcok">✓</span></div>
+            <div class="sline note"><span class="say">Evaluate every action — add or deduct from 10 points, same as the other phases. Too many mistakes, interfering with roleplay, or crashing into the convoy = a strike. Return to the WL PD afterward.</span></div>
+
+            <div class="sgroup"><span class="gx">07</span>Closing · Recognition</div>
+            <div class="sline note"><span class="say">Back at the WL PD, return to the briefing room to congratulate everyone who passed.</span></div>
+            <div class="sline"><span class="say">Congratulations on passing the training! You will be ranked as soon as possible.</span><button class="lc" title="Copy this line"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg></button><span class="lcok">✓</span></div>
+            <div class="sline"><span class="say">Please read the MPD information channel, and take some time to look at the dashboard. Any questions?</span><button class="lc" title="Copy this line"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg></button><span class="lcok">✓</span></div>
+            <div class="sline"><span class="say">Form a wedge on me!</span><button class="lc" title="Copy this line"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg></button><span class="lcok">✓</span></div>
+            <div class="sline note"><span class="say">Screenshot the wedge for proof — do not include anyone who did not pass. After the photo, you may dismiss them.</span></div>
+            <div class="sline"><span class="say">Thank you for attending! Everyone is now dismissed!</span><button class="lc" title="Copy this line"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg></button><span class="lcok">✓</span></div>
           </div>
 
           <div class="panel tpl">
             <div class="ptitle"><span class="tnum">03</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3 7-7"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Group Quiz<span class="tag">SEND TO TRAINEE CHAT</span></div>
             <div class="out" id="tpl-quiz"></div>
             <div class="copyrow"><button class="btn sm pri" data-copy="tpl-quiz" data-msg="m-quiz"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg>Copy Quiz</button><span class="msg" id="m-quiz">✓ Copied</span></div>
+            <p class="muted" style="margin-top:12px;font-size:12.5px">Model answers and full scoring are in the <b>Knowledge</b> module. The quiz is changeable, but keep one question on driving, one on a mod scene, and one of your choice.</p>
           </div>
 
           <div class="panel tpl">
-            <div class="ptitle"><span class="tnum">04</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="9" r="6"/><path d="M9 14l-2 7 5-3 5 3-2-7"/></svg>Closing Script<span class="tag">SAY AT DISMISSAL</span></div>
-            <div class="out" id="tpl-closing"></div>
-            <div class="copyrow"><button class="btn sm pri" data-copy="tpl-closing" data-msg="m-closing"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg>Copy Closing</button><span class="msg" id="m-closing">✓ Copied</span></div>
-            <p class="muted" style="margin-top:12px;font-size:12.5px">After the wedge line, screenshot the wedge for proof — don't include anyone who didn't pass — then dismiss.</p>
-          </div>
-
-          <div class="panel tpl">
-            <div class="ptitle"><span class="tnum">05</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>Results Log<span class="tag">#training-results</span></div>
+            <div class="ptitle"><span class="tnum">04</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>Results Log<span class="tag">#training-results</span></div>
             <div class="out" id="tpl-results"></div>
             <div class="copyrow"><button class="btn sm pri" data-copy="tpl-results" data-msg="m-results"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg>Copy Results</button><span class="msg" id="m-results">✓ Copied</span></div>
-            <p class="muted" style="margin-top:12px;font-size:12.5px">Tip: score everyone in the <b>Evaluation</b> panel, then <b>Record → Copy Results Log</b> hands you this same log already filled in. Swap <span class="kk">#forms</span> / <span class="kk">#rank-up</span> for your server's real channels.</p>
+            <ul class="rules" style="margin-top:14px">
+              <li>List <b>everyone present</b> — write each trainee's full Roblox username in Attendees, and ping those who passed.</li>
+              <li>In <b>Notes</b>, give a short summary of each trainee: behaviour, scores, and strikes.</li>
+              <li>In <b>Proofs</b>, paste the wide <b>starting picture</b> (everyone visible) and the ending <b>wedge picture</b> — this prevents free ranking.</li>
+            </ul>
+            <p class="muted" style="margin-top:10px;font-size:12.5px">Tip: score everyone in <b>Evaluation</b>, then <b>Record → Copy Results Log</b> fills this in for you. Swap <span class="kk">#forms</span> / <span class="kk">#rank-up</span> for your server's real channels.</p>
           </div>
         </div>
       </section>
@@ -899,6 +961,7 @@ a{color:var(--ice2);text-decoration:none}
           <ul class="rules">
             <li>Trainees ping you in the trainee chat; you send the quiz and they have <b>5 minutes</b> to answer — all answers in SPaG.</li>
             <li>Scoring: a wrong answer is <b>−1</b>; an answer missing SPaG is <b>−0.5</b>. A trainee must score <b>2 of 3</b> correct.</li>
+            <li>Below <b>2 correct</b> is a strike — inform the trainee. Send everyone's results once the group is done; the quiz is changeable.</li>
             <li>Send results once everyone is done. Below 2 correct earns a <b>strike</b> — inform the trainee. The quiz is changeable.</li>
           </ul>
         </div>
@@ -968,9 +1031,10 @@ a{color:var(--ice2);text-decoration:none}
           <div class="sig">
             <div><b>Composed by</b><span>Revamp Team</span></div>
             <div><b>Approved by</b><span>MasterCoop56</span></div>
+            <div><b>Document by</b><span>Washington MPD Admin+</span></div>
             <div><b>Protocol</b><span>HB-REV v2.0</span></div>
           </div>
-          <p class="disc">WMPD Mobile Data Terminal — an unofficial, fan-made training tool for the President Roleplay Community Roblox group. Not affiliated with, endorsed by, or representing the real Metropolitan Police Department of the District of Columbia. For in-game roleplay use only. Content reworked and corrected from the original MPD Handbook.</p>
+          <p class="disc">Internal training material — do not share outside the department unless permitted. WMPD Mobile Data Terminal — an unofficial, fan-made training tool for the President Roleplay Community Roblox group. Not affiliated with, endorsed by, or representing the real Metropolitan Police Department of the District of Columbia. For in-game roleplay use only. Content reworked and corrected from the original MPD Handbook.</p>
         </div>
       </section>
 
@@ -1047,13 +1111,13 @@ a{color:var(--ice2);text-decoration:none}
   /* ---- copy & paste hub ---- */
   const TPL={
     notice:`🔔 | MPDC Training\n\nHost: @[your username]\nCo Host: N/A\nAttendees: @MPD | Trainee\n\nLocation: Whitelisted Department Briefing Room\nVC: Training VC 1\n\nNotes: This training is a requirement to begin your progression inside the Metropolitan Police Department. Trainees must already be whitelisted in the PRPC server to join.`,
-    brief:`Welcome to your Washington MPD training. I am your host, [USERNAME].\n\nPermission to speak is active — ask before speaking, and use SPaG at all times. Failure to do so is a strike; three strikes and you fail your training.\n\nYou will address me as Sir or Ma'am. Am I understood?\n\nThis training has four phases: a driving test, a shooting test, scenarios, and a live ride-along. Fail two of those phases and you fail the training.\n\nNow, let us proceed with the first phase.`,
     quiz:`🧠 | MPDC Quiz — answer all three in full SPaG. You have 5 minutes.\n\n1. You are running Code 3 (lights and sirens) and turning onto a road where another officer, also running Code 3, will crash into you if you turn. You are on an emergency and on-duty. Do you still turn onto that road — and why?\n\n2. The President is about to be swarmed by multiple armed civilians at the White House, but you are currently in a Mod Scene. Do you assist the President or hold — and why?\n\n3. Can a Washington Metropolitan Police Department officer protect the President — why or why not?`,
-    results:`🛡️ | MPDC Results\n\nHost: @[your username]\nCo Host: N/A\nAttendees: @[the passers]\n\nPassed: [their grades here]\n\nNotes: [feedback on their performance]\n\nPlease fill out #forms & request your rank in #rank-up\n\nCongratulations, Officer!!`,
-    closing:`Congratulations on passing the training! You will be ranked as soon as possible.\n\nPlease read the MPD information channel and take some time to review the dashboard. Any questions?\n\nForm a wedge on me!\n\nThank you for attending! Everyone is now dismissed.`
+    results:`🛡️ | MPDC Results\n\nHost: @[your username]\nCo Host: N/A\nAttendees: @[the passers]\n\nPassed: [their grades here]\n\nNotes: [feedback on their performance]\n\nPlease fill out #forms & request your rank in #rank-up\n\nCongratulations, Officer!!`
   };
-  ['notice','brief','quiz','closing','results'].forEach(k=>{ const el=$('#tpl-'+k); if(el) el.textContent=TPL[k]; });
+  ['notice','quiz','results'].forEach(k=>{ const el=$('#tpl-'+k); if(el) el.textContent=TPL[k]; });
   $$('[data-copy]').forEach(b=>b.addEventListener('click',()=>copy(b.dataset.copy,b.dataset.msg)));
+  function lcFallback(t){ try{ const ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }catch(e){} }
+  $$('.sline .lc').forEach(b=>b.addEventListener('click',()=>{ const sl=b.parentElement, say=sl.querySelector('.say'), ok=sl.querySelector('.lcok'); const t=(say.textContent||'').trim(); const done=()=>{ if(ok){ ok.classList.add('show'); clearTimeout(ok._t); ok._t=setTimeout(()=>ok.classList.remove('show'),1600); } }; if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(done).catch(()=>{ lcFallback(t); done(); }); } else { lcFallback(t); done(); } }));
 
   /* ---- copy ---- */
   function copy(srcId,msgId){
