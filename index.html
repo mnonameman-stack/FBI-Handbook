@@ -799,7 +799,11 @@ a{color:var(--ice2);text-decoration:none}
             <div class="ptitle"><span class="tnum">03</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3 7-7"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Group Quiz<span class="tag">SEND TO TRAINEE CHAT</span></div>
             <div class="out" id="tpl-quiz"></div>
             <div class="copyrow"><button class="btn sm pri" data-copy="tpl-quiz" data-msg="m-quiz"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h8"/></svg>Copy Quiz</button><span class="msg" id="m-quiz">✓ Copied</span></div>
-            <p class="muted" style="margin-top:12px;font-size:12.5px">Model answers and full scoring are in the <b>Knowledge</b> module. The quiz is changeable, but keep one question on driving, one on a mod scene, and one of your choice.</p>
+            <p class="muted" style="margin-top:12px;font-size:12.5px">Model answers and full scoring are in the <b>Knowledge</b> module.</p>
+            <div class="callout warn" style="margin-top:12px">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l10 18H2z"/><path d="M12 9v5M12 17h.01"/></svg>
+              <div class="t">You are recommended to change the quiz depending on you, but make sure it is still 3 questions.</div>
+            </div>
           </div>
 
           <div class="panel tpl">
@@ -809,9 +813,8 @@ a{color:var(--ice2);text-decoration:none}
             <ul class="rules" style="margin-top:14px">
               <li>List <b>everyone present</b> — write each trainee's full Roblox username in Attendees, and ping those who passed.</li>
               <li>In <b>Notes</b>, give a short summary of each trainee: behaviour, scores, and strikes.</li>
-              <li>In <b>Proofs</b>, paste the wide <b>starting picture</b> (everyone visible) and the ending <b>wedge picture</b> — this prevents free ranking.</li>
             </ul>
-            <p class="muted" style="margin-top:10px;font-size:12.5px">Tip: score everyone in <b>Evaluation</b>, then <b>Record → Copy Results Log</b> fills this in for you. Swap <span class="kk">#forms</span> / <span class="kk">#rank-up</span> for your server's real channels.</p>
+            <p class="muted" style="margin-top:10px;font-size:12.5px">Tip: score everyone in <b>Evaluation</b>, then <b>Record → Copy Results Log</b> fills this in for you — the form and rank-up channel links are already baked in.</p>
           </div>
         </div>
       </section>
@@ -1110,9 +1113,9 @@ a{color:var(--ice2);text-decoration:none}
 
   /* ---- copy & paste hub ---- */
   const TPL={
-    notice:`🔔 | MPDC Training\n\nHost: @[your username]\nCo Host: N/A\nAttendees: @MPD | Trainee\n\nLocation: Whitelisted Department Briefing Room\nVC: Training VC 1\n\nNotes: This training is a requirement to begin your progression inside the Metropolitan Police Department. Trainees must already be whitelisted in the PRPC server to join.`,
+    notice:'# <:MPD:1497255252024361010> | MPDC Training\n> `Host:` (@ Your user name.)\n> `Co Host:`  N/A\n> `Location:` Whitelisted Department Briefing Room\n> `VC:` (Copy the training VC link)\n> `Pings:` @MPD | Trainee\n> \n> `Notes:` This training is a requirement to start your progression inside the Metropolitan Police Department. Trainees must already be whitelisted in the PRPC server to join.',
     quiz:`🧠 | MPDC Quiz — answer all three in full SPaG. You have 5 minutes.\n\n1. You are running Code 3 (lights and sirens) and turning onto a road where another officer, also running Code 3, will crash into you if you turn. You are on an emergency and on-duty. Do you still turn onto that road — and why?\n\n2. The President is about to be swarmed by multiple armed civilians at the White House, but you are currently in a Mod Scene. Do you assist the President or hold — and why?\n\n3. Can a Washington Metropolitan Police Department officer protect the President — why or why not?`,
-    results:`🛡️ | MPDC Results\n\nHost: @[your username]\nCo Host: N/A\nAttendees: @[the passers]\n\nPassed: [their grades here]\n\nNotes: [feedback on their performance]\n\nPlease fill out #forms & request your rank in #rank-up\n\nCongratulations, Officer!!`
+    results:'# <:MPD:1497255252024361010> | MPDC Results\n> `Host:` (@ Your user name.)\n> `Co Host:`  N/A\n> `Attendees:` @ The passer\n> \n> `Passed:` (Their Grades here)\n> \n> `Notes:` (Give a feedback of their performance)\n-# Please fill out <#1478817835403706508> & request in <#1498168759612080238> \n**Congratulations, Officer!!**'
   };
   ['notice','quiz','results'].forEach(k=>{ const el=$('#tpl-'+k); if(el) el.textContent=TPL[k]; });
   $$('[data-copy]').forEach(b=>b.addEventListener('click',()=>copy(b.dataset.copy,b.dataset.msg)));
@@ -1324,11 +1327,14 @@ a{color:var(--ice2);text-decoration:none}
         <div class="cert-foot">Record generated ${now.toLocaleString()} · ${sid}<br>Attach to your #training-results log. Unofficial fan document for the President Roleplay Community Roblox group — not affiliated with the Metropolitan Police Department of the District of Columbia.</div>
       </div>`;
     const pNames=passed.map(t=>t.name).filter(Boolean);
-    const attLine=pNames.length?pNames.map(n=>'@'+n).join(' '):'[ping the passers]';
-    let txt=`🛡️ | MPDC Results\n\nHost: ${S.host||'@[your username]'}\nCo Host: ${S.cohost||'N/A'}\nAttendees: ${attLine}\n\nPassed:\n`;
-    if(passed.length) passed.forEach(t=>{ txt+=`${t.name} — ${totalOf(t)==null?'-':totalOf(t)}/40  (Drive ${t.scores[0]==null?'-':t.scores[0]} · Shoot ${t.scores[1]==null?'-':t.scores[1]} · Scene ${t.scores[2]==null?'-':t.scores[2]} · Patrol ${t.scores[3]==null?'-':t.scores[3]})\n`; });
-    else txt+='None this session.\n';
-    txt+=`\nNotes: [feedback on their performance]\n\nPlease fill out #forms & request your rank in #rank-up\n\nCongratulations, Officer!!`;
+    const att=pNames.length?pNames.map(n=>'@'+n).join(' '):'@ The passer';
+    let txt='# <:MPD:1497255252024361010> | MPDC Results\n';
+    txt+='> `Host:` '+(S.host||'(@ Your user name.)')+'\n';
+    txt+='> `Co Host:`  '+(S.cohost||'N/A')+'\n';
+    txt+='> `Attendees:` '+att+'\n> \n';
+    txt+='> `Passed:`'+(pNames.length?'':' (Their Grades here)')+'\n';
+    passed.forEach(t=>{ txt+='> '+t.name+' — '+(totalOf(t)==null?'-':totalOf(t))+'/40\n'; });
+    txt+='> \n> `Notes:` (Give a feedback of their performance)\n-# Please fill out <#1478817835403706508> & request in <#1498168759612080238> \n**Congratulations, Officer!!**';
     $('#cert').dataset.copy=txt;
   }
 
